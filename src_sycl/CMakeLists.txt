@@ -3,33 +3,29 @@
 
 find_package(PkgConfig REQUIRED)
 
-pkg_check_modules(Glew REQUIRED IMPORTED_TARGET glew)
+# pkg_check_modules(Glew REQUIRED IMPORTED_TARGET glew)
 
-find_package(glm REQUIRED)
-find_package(glfw3 REQUIRED)
-find_package(OpenGL REQUIRED)
+# find_package(glm REQUIRED)
+# find_package(glfw3 REQUIRED)
+# find_package(OpenGL REQUIRED)
 find_package(dpct REQUIRED)
 
 set(COMMON_SOURCE 
 	nbody.cpp 
-	camera.cpp 
 	sim_param.cpp 
-	gen.cpp 
 	simulator.dp.cpp)
 
-set(OPENGL_SOURCE 
-	renderer_gl.cpp 
-	shader.cpp)
+# set(OPENGL_SOURCE 
+# 	renderer_gl.cpp 
+# 	shader.cpp)
 
-add_executable(${BINARY_NAME} ${COMMON_SOURCE} ${OPENGL_SOURCE})
+add_executable(${BINARY_NAME} ${COMMON_SOURCE})
 
-target_compile_definitions(${BINARY_NAME} PRIVATE -DUSE_OPENGL COMPILER_NAME="SYCL")
+target_compile_definitions(${BINARY_NAME} PRIVATE COMPILER_NAME="SYCL")
 
 target_compile_features(${BINARY_NAME} PRIVATE cxx_auto_type cxx_nullptr cxx_range_for)
 
 target_include_directories(${BINARY_NAME} PRIVATE ${dpct_INCLUDE_DIR})
-
-target_link_libraries(${BINARY_NAME} PRIVATE glm::glm glfw PkgConfig::Glew OpenGL::OpenGL)
 
 if(BACKEND STREQUAL "COMPUTECPP")
 
